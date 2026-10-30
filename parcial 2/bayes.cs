@@ -1,8 +1,6 @@
 using system;
 using system.collections.generic;
 
-//clasificacion de texto con multiples palabras
-
 public class bayes 
 {
     private readolny hashset<string>_textoSeparado = new();
@@ -27,13 +25,13 @@ public class bayes
 
         if (_textoSeparado.contains("ganar") && _textoSeparado.contains("dinero"))
         {
-            scoreSpam += 97.6; // Alta probabilidad de spam
+            scoreSpam += 97.6; 
         }else if(_textoSeparado.contains("dinero"))
         {
-            scoreSpam += 84; // Probabilidad moderada de spam
+            scoreSpam += 84; 
         }else if(_textoSeparado.contains("ganar"))
         {
-            scoreSpam += 77; // Baja probabilidad de spam   
+            scoreSpam += 77;  
         }
     }
 }

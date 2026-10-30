@@ -5,10 +5,6 @@ using System.Text;
 
 namespace DiagnosticoRed
 {
-    // =====================================================================
-    // PARTE 1: RAZONAMIENTO MONÓTONO
-    // Las conclusiones solo se acumulan; nunca se eliminan.
-    // =====================================================================
     public class SistemaMonotono
     {
         private readonly HashSet<string> _hechos = new HashSet<string>();
@@ -19,9 +15,6 @@ namespace DiagnosticoRed
             if (_hechos.Add(hecho))
                 Console.WriteLine($"  [+] Hecho agregado: \"{hecho}\"");
         }
-
-        // Encadenamiento hacia adelante hasta alcanzar un punto fijo.
-        // Solo se ejecutan operaciones Add sobre las conclusiones: jamás Remove.
         public void Inferir()
         {
             bool huboCambios;
@@ -49,11 +42,6 @@ namespace DiagnosticoRed
 
         public bool Concluye(string conclusion) => _conclusiones.Contains(conclusion);
     }
-
-    // =====================================================================
-    // PARTE 2: RAZONAMIENTO NO MONÓTONO
-    // Una conclusión por defecto puede ser retractada ante una excepción.
-    // =====================================================================
     public class SistemaNoMonotono
     {
         private readonly HashSet<string> _hechos = new HashSet<string>();
@@ -101,9 +89,6 @@ namespace DiagnosticoRed
         }
     }
 
-    // =====================================================================
-    // PARTE 3: PROGRAMA PRINCIPAL
-    // =====================================================================
     public class Program
     {
         public static void Main(string[] args)
