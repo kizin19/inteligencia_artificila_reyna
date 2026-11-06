@@ -22,7 +22,7 @@ namespace FiltroSpamBayes
 
     public class ClasificadorBayes
     {
-        public double ProbPreviaSpam { get; } = 0.40;   // P(Spam) = 40%
+        public double ProbPreviaSpam { get; } = 0.30;   
 
         public List<Palabra> Palabras { get; } = new List<Palabra>
         {
@@ -69,69 +69,52 @@ namespace FiltroSpamBayes
     }
 
     public class Program
+{
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        var clasificador = new ClasificadorBayes();
+
+        Console.WriteLine("FILTRO DE SPAM CON TEOREMA DE BAYES");
+  
+
+        Console.WriteLine("CASOS DE DEMOSTRACIÓN");
+        var casos = new[]
         {
-            Console.OutputEncoding = Encoding.UTF8;
-            var clasificador = new ClasificadorBayes();
+            "Hola, te veo mañana en la reunión",
+            "Puedes ganar un premio hoy",
+            "Te mandamos el dinero de la renta",
+            "Puedes ganar dinero rápido desde casa"
+        };
 
-            Titulo("FILTRO DE SPAM CON TEOREMA DE BAYES");
-            MostrarParametros(clasificador);
+        foreach (var mensaje in casos)
+            AnalizarMensaje(clasificador, mensaje);
 
-            Titulo("CASOS DE DEMOSTRACIÓN");
-            var casos = new[]
-            {
-                "Hola, te veo mañana en la reunión",
-                "Puedes ganar un premio hoy",
-                "Te mandamos el dinero de la renta",
-                "Puedes ganar dinero rápido desde casa"
-            };
-
-            foreach (var mensaje in casos)
-                AnalizarMensaje(clasificador, mensaje);
-
-            Titulo("MODO INTERACTIVO (Enter vacío para salir)");
-            while (true)
-            {
-                Console.Write("\nEscribe un mensaje: ");
-                string entrada = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(entrada)) break;
-                AnalizarMensaje(clasificador, entrada);
-            }
-
-            Console.WriteLine("\nFin del programa.");
+        Console.WriteLine("\nMODO INTERACTIVO (Enter vacío para salir)");
+        while (true)
+        {
+            Console.Write("\nEscribe un mensaje: ");
+            string entrada = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(entrada)) break;
+            AnalizarMensaje(clasificador, entrada);
         }
 
-        private static void AnalizarMensaje(ClasificadorBayes clasificador, string mensaje)
-        {
-            Console.WriteLine($"\nMensaje: \"{mensaje}\"");
-
-            var detectadas = clasificador.DetectarPalabras(mensaje);
-            if (detectadas.Count == 0)
-                Console.WriteLine("  No se detectaron palabras sospechosas.");
-
-            double prob = clasificador.CalcularProbSpam(detectadas, true);
-
-            Console.WriteLine($"  >> Probabilidad final de spam: {prob:P2}");
-            Console.WriteLine($"  >> Clasificación: {clasificador.Clasificar(prob)}");
-        }
-
-        private static void MostrarParametros(ClasificadorBayes c)
-        {
-            Console.WriteLine($"  P(Spam) = {c.ProbPreviaSpam:P0}   P(No Spam) = {1 - c.ProbPreviaSpam:P0}");
-            foreach (var p in c.Palabras)
-            {
-                Console.WriteLine($"  \"{p.Texto}\": P(palabra|Spam) = {p.ProbDadoSpam:P0}, " +
-                                  $"P(palabra|No Spam) = {p.ProbDadoNoSpam:P0}");
-            }
-            Console.WriteLine();
-        }
-
-        private static void Titulo(string texto)
-        {
-            Console.WriteLine(new string('=', 64));
-            Console.WriteLine($"  {texto}");
-            Console.WriteLine(new string('=', 64));
-        }
+        Console.WriteLine("\nFin del programa.");
     }
+
+    private static void AnalizarMensaje(ClasificadorBayes clasificador, string mensaje)
+    {
+        Console.WriteLine($"\nMensaje: \"{mensaje}\"");
+
+        var detectadas = clasificador.DetectarPalabras(mensaje);
+        if (detectadas.Count == 0)
+            Console.WriteLine("  No se detectaron palabras sospechosas.");
+
+        double prob = clasificador.CalcularProbSpam(detectadas, true);
+
+        Console.WriteLine($"  >> Probabilidad final de spam: {prob:P2}");
+        Console.WriteLine($"  >> Clasificación: {clasificador.Clasificar(prob)}");
+    }
+
+   
+}
 }
